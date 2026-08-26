@@ -14,7 +14,7 @@ Never place the value in `wrangler.jsonc`, source code, logs, request bodies, fi
 
 ## Runtime verification
 
-Workers can make outbound HTTPS requests from the fetch handler. The implementation’s internal session check constructs a request for a normalized `/in/` path using only the server-side secret and reports configuration metadata without returning the cookie. It does not fetch LinkedIn or expose a public profile endpoint; that belongs to the next implementation slice.
+Workers can make outbound HTTPS requests from the fetch handler. The session provider seam constructs requests for normalized /in/ paths using only the server-side secret. It does not fetch LinkedIn; live provider integration belongs to a later slice.
 
 ## Scope and limitations
 

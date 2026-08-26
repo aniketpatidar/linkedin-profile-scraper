@@ -1,6 +1,6 @@
 # Deliver the Worker contract with a fake Profile Provider
 
-Status: ready-for-agent
+Status: resolved
 Label: ready-for-agent
 
 ## Parent
@@ -13,14 +13,18 @@ Build the public Worker request path around a fake Profile Provider so the API c
 
 ## Acceptance criteria
 
-- [ ] The Worker exposes a documented profile-request endpoint over its local runtime.
-- [ ] Canonical `/in/{public-identifier}` URLs are accepted after safe normalization; non-LinkedIn and unsupported profile URL shapes are rejected.
-- [ ] Successful responses have stable sections for identity, headline, location, about, experience, education, skills, certifications, languages, images, and metadata.
-- [ ] Missing singular fields use `null`, missing collections use `[]`, and field availability is explicit.
-- [ ] A real identified profile with missing fields returns a Partial Profile rather than failing the request.
-- [ ] Invalid input, unavailable profiles, unsupported URLs, provider failures, and limits map to a stable JSON error envelope and conventional statuses.
-- [ ] Contract tests exercise the external Worker behavior through a fake Profile Provider; no live provider or real credentials are required.
+- [x] The Worker exposes a documented profile-request endpoint over its local runtime.
+- [x] Canonical `/in/{public-identifier}` URLs are accepted after safe normalization; non-LinkedIn and unsupported profile URL shapes are rejected.
+- [x] Successful responses have stable sections for identity, headline, location, about, experience, education, skills, certifications, languages, images, and metadata.
+- [x] Missing singular fields use `null`, missing collections use `[]`, and field availability is explicit.
+- [x] A real identified profile with missing fields returns a Partial Profile rather than failing the request.
+- [x] Invalid input, unavailable profiles, unsupported URLs, provider failures, and limits map to a stable JSON error envelope and conventional statuses.
+- [x] Contract tests exercise the external Worker behavior through a fake Profile Provider; no live provider or real credentials are required.
 
 ## Blocked by
 
 - `.scratch/linkedin-profile-api/issues/01-challenge-integration-boundary.md`
+
+## Resolution
+
+Implemented the public `POST /profile` Worker contract with an injected fake Profile Provider, URL normalization and rejection, stable normalized response defaults, Partial Profile availability metadata, request IDs, and safe error mapping. Added boundary tests for success, unsupported URLs, missing profiles, provider failures, and malformed JSON. `npm test`, `wrangler types --check`, `wrangler deploy --dry-run`, and `git diff --check` pass.

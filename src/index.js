@@ -1,11 +1,3 @@
-export default {
-  async fetch(request) {
-    const url = new URL(request.url);
+import { createProfileWorker } from "./profile-api.js";
 
-    if (url.pathname === "/health") {
-      return Response.json({ ok: true });
-    }
-
-    return Response.json({ error: "Not found" }, { status: 404 });
-  }
-};
+export default createProfileWorker();
