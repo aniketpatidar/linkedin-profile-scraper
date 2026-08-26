@@ -28,10 +28,10 @@ _Avoid_: Incomplete response, empty profile
 The replaceable integration boundary through which the API obtains a Profile from a data source.
 _Avoid_: Scraper, provider payload
 
-**Challenge Integration**:
-A Profile retrieval path created solely to satisfy the hiring challenge, using the owner's own LinkedIn credentials and not intended as a general production data service.
+**Owner Session Integration**:
+A Profile retrieval path using the owner’s own LinkedIn session and limited to the configured deployment; it is not intended as a general production data service.
 _Avoid_: Authorized Source, public scraper
 
 **Owner Credentials**:
-Authentication secrets belonging to the challenge operator and used only by the Challenge Integration; they are never shared with callers or committed to the repository.
+Authentication secrets belonging to the operator and used only by the Owner Session Integration; they are never shared with callers or committed to the repository.
 _Avoid_: User credentials, caller password

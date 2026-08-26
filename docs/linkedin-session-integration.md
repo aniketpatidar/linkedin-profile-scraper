@@ -1,6 +1,6 @@
-# Challenge Integration
+# LinkedIn Session Integration
 
-The hiring challenge uses a challenge-only integration backed by the owner’s manually obtained LinkedIn browser session cookie. The cookie is an `Owner Credential`: it is configured as the `LINKEDIN_SESSION_COOKIE` Cloudflare Worker secret and is never accepted from API callers.
+The service uses a limited-use integration backed by the owner’s manually obtained LinkedIn browser session cookie. The cookie is an `Owner Credential`: it is configured as the `LINKEDIN_SESSION_COOKIE` Cloudflare Worker secret and is never accepted from API callers.
 
 ## Configuration
 
@@ -18,5 +18,5 @@ Workers can make outbound HTTPS requests from the fetch handler. The session pro
 
 ## Scope and limitations
 
-This is limited to the hiring challenge deployment and the owner’s account. It is not a general-purpose authorized LinkedIn data service. It does not accept LinkedIn passwords, caller-provided cookies, or arbitrary authentication material. A session cookie may expire, be revoked, or fail when LinkedIn requires browser execution or rejects Worker-originated requests; in that case the integration must be marked runtime-incompatible rather than bypassing protections.
+This is limited to the configured deployment and the owner’s account. It is not a general-purpose authorized LinkedIn data service. It does not accept LinkedIn passwords, caller-provided cookies, or arbitrary authentication material. A session cookie may expire, be revoked, or fail when LinkedIn requires browser execution or rejects Worker-originated requests; in that case the integration must be marked runtime-incompatible rather than bypassing protections.
 Operational safeguards are intentionally MVP-scoped: profile retrieval is on demand with no profile persistence or cache, upstream responses are bounded and timed out, and the Worker applies a best-effort per-isolate anonymous rate limit. This is not a durable abuse-control boundary.
