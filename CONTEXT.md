@@ -21,9 +21,17 @@ The normalized LinkedIn URL supplied to identify a Public Member Profile.
 _Avoid_: LinkedIn link, page URL
 
 **Partial Profile**:
-A Profile for which the Authorized Source returned some fields but not all requested fields; unavailable fields are represented explicitly rather than causing the request to fail.
+A Profile for which its data source returned some fields but not all requested fields; unavailable fields are represented explicitly rather than causing the request to fail.
 _Avoid_: Incomplete response, empty profile
 
 **Profile Provider**:
-The replaceable integration boundary through which the API obtains a Profile from an Authorized Source.
+The replaceable integration boundary through which the API obtains a Profile from a data source.
 _Avoid_: Scraper, provider payload
+
+**Challenge Integration**:
+A Profile retrieval path created solely to satisfy the hiring challenge, using the owner's own LinkedIn credentials and not intended as a general production data service.
+_Avoid_: Authorized Source, public scraper
+
+**Owner Credentials**:
+Authentication secrets belonging to the challenge operator and used only by the Challenge Integration; they are never shared with callers or committed to the repository.
+_Avoid_: User credentials, caller password
