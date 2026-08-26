@@ -260,6 +260,13 @@ export function createLinkedInSessionProvider({
         429,
       );
     }
+    if (upstreamResponse.status === 999) {
+      throw new ProfileApiError(
+        "provider_unavailable",
+        "profile provider is unavailable",
+        502,
+      );
+    }
     if (!upstreamResponse.ok) {
       throw new ProfileApiError(
         "provider_error",

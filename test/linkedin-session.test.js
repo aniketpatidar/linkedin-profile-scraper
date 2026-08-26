@@ -118,6 +118,7 @@ test("maps authentication, rate-limit, not-found, and provider failures", async 
     [429, "rate_limited", 429],
     [404, "profile_not_found", 404],
     [500, "provider_error", 502],
+    [999, "provider_unavailable", 502],
   ]) {
     const provider = createLinkedInSessionProvider({
       sessionCookie: "li_at=fixture-only",
