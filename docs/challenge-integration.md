@@ -14,7 +14,7 @@ Never place the value in `wrangler.jsonc`, source code, logs, request bodies, fi
 
 ## Runtime verification
 
-Workers can make outbound HTTPS requests from the fetch handler. The session provider seam constructs requests for normalized /in/ paths using only the server-side secret. It does not fetch LinkedIn; live provider integration belongs to a later slice.
+Workers can make outbound HTTPS requests from the fetch handler. The session provider seam constructs requests for normalized /in/ paths using only the server-side secret. Automated tests use fixtures; live connectivity requires deployment with the Owner Credential.
 
 ## Scope and limitations
 
