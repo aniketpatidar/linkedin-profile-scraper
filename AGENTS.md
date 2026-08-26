@@ -13,3 +13,9 @@ Use the default triage labels: `needs-triage`, `needs-info`, `ready-for-agent`, 
 ### Domain docs
 
 This is a single-context repository using root `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.
+
+## Git Commits
+
+- **NEVER** add "Co-authored-by:" or any co-author lines
+- **Format:** `[<branch>] <summary>` (e.g. `[T-67] Add credit wallet segmented progress bar`)
+- Use current branch name (e.g., `T-XX`), sentence case, active voice, ~80 chars max
