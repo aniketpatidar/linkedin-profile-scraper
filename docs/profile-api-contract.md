@@ -17,4 +17,4 @@ Errors use this shape:
 {"error":{"code":"unsupported_profile","message":"only public member profiles are supported","requestId":"..."}}
 ```
 
-The current slice maps invalid input to `400`, unsupported profile shapes to `422`, missing profiles to `404`, and provider failures to `502`. Every response includes an `x-request-id` header; profile content and provider error details are not logged or returned.
+The current slice maps invalid input to `400`, unsupported profile shapes to `422`, missing profiles to `404`, and provider failures to `502`, and anonymous rate-limit responses to `429`. Every response includes an `x-request-id` header; profile content and provider error details are not logged or returned.

@@ -19,3 +19,4 @@ Workers can make outbound HTTPS requests from the fetch handler. The session pro
 ## Scope and limitations
 
 This is limited to the hiring challenge deployment and the owner’s account. It is not a general-purpose authorized LinkedIn data service. It does not accept LinkedIn passwords, caller-provided cookies, or arbitrary authentication material. A session cookie may expire, be revoked, or fail when LinkedIn requires browser execution or rejects Worker-originated requests; in that case the integration must be marked runtime-incompatible rather than bypassing protections.
+Operational safeguards are intentionally MVP-scoped: profile retrieval is on demand with no profile persistence or cache, upstream responses are bounded and timed out, and the Worker applies a best-effort per-isolate anonymous rate limit. This is not a durable abuse-control boundary.

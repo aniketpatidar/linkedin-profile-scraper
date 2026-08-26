@@ -1,2 +1,3 @@
 # linkedin-profile-scraper
 This challenge slice verifies fixture-backed extraction of identity, headline, location, about, experience, education, skills, certifications, languages, images, and retrieval metadata. Coverage is provider-shape dependent; unavailable fields remain explicit partial results.
+The anonymous MVP uses a best-effort in-memory limit of 10 profile requests per minute per Worker isolate. Logs contain only request metadata (method, route, status, request ID, and duration); profile data, full URLs, images, cookies, and provider details are excluded. Caller authentication and durable abuse controls remain deferred.
