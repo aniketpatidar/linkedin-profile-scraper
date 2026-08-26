@@ -23,4 +23,4 @@ Build the public Worker request path around a fake Profile Provider so the API c
 
 ## Blocked by
 
-- `.scratch/linkedin-profile-api/issues/01-verify-authorized-source.md`
+- `.scratch/linkedin-profile-api/issues/01-challenge-integration-boundary.md`

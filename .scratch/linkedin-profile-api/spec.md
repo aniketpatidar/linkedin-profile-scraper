@@ -89,3 +89,7 @@ The repository will include setup instructions, API documentation, provider conf
 - Provider selection is an implementation prerequisite, not an assumption. The team must verify the source before claiming field coverage or deployment compatibility.
 - The README must clearly distinguish fields returned by the normalized contract from fields that may be unavailable from the selected source.
 - The design baseline and ADRs in the repository are authoritative for the accepted runtime, source boundary, response contract, and MVP access policy.
+
+## Scope amendment
+
+The hiring challenge PDF explicitly permits using the owner's own LinkedIn credentials and asks for reverse-engineering. For this challenge only, ADR-0005 and `01-challenge-integration-boundary.md` supersede the original Authorized Source implementation path. The research note remains as historical evidence and should not be interpreted as approval for a general production service.

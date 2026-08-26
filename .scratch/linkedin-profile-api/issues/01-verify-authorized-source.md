@@ -1,7 +1,7 @@
 # Verify and select the Authorized Source
 
-Status: ready-for-agent
-Label: ready-for-agent
+Status: superseded
+Label: wontfix
 
 ## Parent
 
@@ -22,3 +22,7 @@ Investigate and select one Authorized Source for LinkedIn public member-profile 
 ## Blocked by
 
 None - can start immediately
+
+## Resolution
+
+No Authorized Source is selected for the current challenge scope. LinkedIn official APIs require authenticated or approved access and do not satisfy anonymous arbitrary-profile lookup with the requested field coverage. Bright Data is technically compatible but its public license does not establish permission to redistribute data through a similar hosted product. See the authorized-source-research.md note and the 01-verify-authorized-source-resolution.md record; written provider authorization or a consent-based scope revision is required.
