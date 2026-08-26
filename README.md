@@ -44,14 +44,14 @@ npx wrangler secret put LINKEDIN_SESSION_COOKIE
 npm run deploy
 ```
 
-Wrangler prints the deployed `workers.dev` URL after a successful deployment. Record that URL in this README only after verifying it. The current repository cannot publish a credentialed Worker until the secret has been set.
+Wrangler prints the deployed `workers.dev` URL after a successful deployment. Record that URL in this README only after verifying it. Deployed endpoint: https://linkedin-profile-api.aniketpatidar01.workers.dev. The deployment uses the configured server-side session secret.
 
 ## API
 
 `POST /profile` accepts one JSON field:
 
 ```json
-{"url":"https://www.linkedin.com/in/example"}
+{ "url": "https://www.linkedin.com/in/example" }
 ```
 
 Only HTTPS `/in/{public-identifier}` member-profile URLs are accepted. Host aliases, query parameters, and trailing slashes are normalized. Company pages, posts, search URLs, recruiter/private paths, non-HTTPS URLs, and non-LinkedIn URLs are rejected.
@@ -79,5 +79,6 @@ Retrieval is on demand. The Worker does not persist profiles or cache responses.
 ## Verification
 
 Use `npm test` for the deterministic verification suite. Live verification is opt-in/manual and requires the deployed Worker plus the owner session secret; it is not part of CI. Before publishing a live result, verify `/health`, one valid profile request, one unsupported URL, and one provider/authentication failure without recording profile content or credentials.
+The deployed smoke check currently verifies `GET /health` → `200` and an unsupported company URL → `422` with `unsupported_profile`. A successful profile retrieval requires a real public profile URL whose owner session is accepted by LinkedIn; the placeholder `/in/example` returned a provider `502` and is not treated as a success.
 
 See [the profile contract](docs/profile-api-contract.md) and [linkedin session integration notes](docs/linkedin-session-integration.md) for the detailed schema and limitations.
