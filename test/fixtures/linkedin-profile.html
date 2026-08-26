@@ -9,8 +9,41 @@
         "name": "Ada Example",
         "jobTitle": "Staff Engineer",
         "description": "Builds reliable systems.",
-        "address": {"addressLocality": "Bengaluru"},
-        "image": "https://media.example/avatar.jpg"
+        "address": { "addressLocality": "Bengaluru" },
+        "image": {
+          "url": "https://media.example/avatar.jpg",
+          "width": 400,
+          "height": 400
+        },
+        "worksFor": [
+          {
+            "name": "Acme Systems",
+            "jobTitle": "Staff Engineer",
+            "description": "Builds reliable systems.",
+            "startDate": "2020-01",
+            "endDate": null
+          }
+        ],
+        "alumniOf": [
+          {
+            "name": "Example University",
+            "degree": "BSc Computer Science",
+            "startDate": "2012",
+            "endDate": "2016"
+          }
+        ],
+        "knowsAbout": ["JavaScript", "Cloudflare Workers"],
+        "hasCredential": [
+          {
+            "name": "Cloudflare Developer Certification",
+            "issuer": { "name": "Cloudflare" },
+            "dateIssued": "2024-03"
+          }
+        ],
+        "knowsLanguage": [
+          "English",
+          { "name": "Hindi", "proficiency": "professional" }
+        ]
       }
     </script>
   </head>
