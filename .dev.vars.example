@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local-only testing and replace the placeholder.
+# Never commit .dev.vars or a real session cookie.
+LINKEDIN_SESSION_COOKIE=""
