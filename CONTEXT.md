@@ -11,3 +11,19 @@ _Avoid_: Scraper, reverse-engineered endpoint
 **Profile**:
 The structured representation of one LinkedIn member's available professional information returned by this API.
 _Avoid_: Account, page
+
+**Public Member Profile**:
+A LinkedIn member profile identified by a publicly shareable `/in/{public-identifier}` URL and requestable without caller-supplied LinkedIn authentication.
+_Avoid_: Company profile, private profile, recruiter profile
+
+**Profile URL**:
+The normalized LinkedIn URL supplied to identify a Public Member Profile.
+_Avoid_: LinkedIn link, page URL
+
+**Partial Profile**:
+A Profile for which the Authorized Source returned some fields but not all requested fields; unavailable fields are represented explicitly rather than causing the request to fail.
+_Avoid_: Incomplete response, empty profile
+
+**Profile Provider**:
+The replaceable integration boundary through which the API obtains a Profile from an Authorized Source.
+_Avoid_: Scraper, provider payload
