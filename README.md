@@ -70,15 +70,16 @@ Successful responses contain:
 
 Missing singular fields are `null`; missing collections are `[]`. An identified profile with missing fields returns HTTP 200 as a Partial Profile.
 
-Errors use `error.code`, `error.message`, and `error.requestId`. Current statuses are `400` invalid input, `404` missing route/profile, `422` unsupported URL, `429` anonymous/provider rate limit, and `502` provider/authentication failure. Every response includes `x-request-id`.
+Errors use `error.code`, `error.message`, and `error.requestId`. Current statuses are `400` invalid input, `404` missing route/profile, `422` unsupported URL, `429` rate limit or `session_busy`, and `502` provider/authentication failure or unavailability. Every response includes `x-request-id`.
 
 ## Operational limits
 
-Retrieval is on demand. The Worker does not persist profiles or cache responses. Upstream responses are bounded to 2 MiB and requests time out after 10 seconds. Anonymous access has a best-effort limit of 10 profile requests per minute per Worker isolate. Logs contain only method, route, status, request ID, and duration; they omit profile data, full URLs, images, cookies, and provider details. Caller authentication and durable abuse controls are intentionally deferred for this MVP.
+Retrieval is on demand. The Worker does not persist profiles or cache responses. Upstream responses are bounded to 2 MiB and requests time out after 10 seconds. Anonymous access has a best-effort limit of 10 profile requests per minute per client key, plus one active browser operation for the deployment session. Logs contain only method, route, status, request ID, and duration; they omit profile data, full URLs, images, cookies, and provider details. Caller authentication and durable abuse controls are intentionally deferred for this MVP.
 
 ## Verification
 
-Use `npm test` for the deterministic verification suite. Live verification is opt-in/manual and requires the deployed Worker plus the owner session secret; it is not part of CI. Before publishing a live result, verify `/health`, one valid profile request, one unsupported URL, and one provider/authentication failure without recording profile content or credentials.
-The deployed smoke check currently verifies `GET /health` → `200` and an unsupported company URL → `422` with `unsupported_profile`. A successful profile retrieval requires a real public profile URL whose owner session is accepted by LinkedIn; the placeholder `/in/example` returned a provider `502` and is not treated as a success.
+Use `npm test` for the deterministic verification suite (26 tests). Live verification is opt-in and requires the deployed Worker plus the Owner Credential; it is not part of CI. Verify `/health`, one valid profile request, one unsupported URL, and one provider/authentication failure without recording profile content or credentials. If LinkedIn invalidates the Owner Credential, rotate it interactively with `npx wrangler secret put LINKEDIN_SESSION_COOKIE`, clear coordinated session state through the operator-only reauthentication operation, and do not retry automatically.
+
+The deployed smoke checks verify `GET /health` → `200` and unsupported profile validation → `422`. A successful profile retrieval requires a real public profile URL whose Owner Session Integration is accepted by LinkedIn; the deployment may return `502 provider_unavailable` when LinkedIn rejects Browser Run access.
 
 See [the profile contract](docs/profile-api-contract.md) and [linkedin session integration notes](docs/linkedin-session-integration.md) for the detailed schema and limitations.
