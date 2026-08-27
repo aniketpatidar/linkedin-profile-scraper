@@ -4,7 +4,7 @@ A Cloudflare Worker implementing the LinkedIn profile API. It accepts a canonica
 
 ## Scope
 
-This is a limited-use integration using the operator's own manually obtained LinkedIn browser session cookie. It is not a general-purpose or production LinkedIn data service. The cookie is server-side only and is never accepted from API callers. Provider coverage is shape-dependent: the adapter maps fields present in its LinkedIn HTML/JSON-LD response, and missing fields remain explicit Partial Profile values.
+This is a limited-use integration using the operator's own manually obtained LinkedIn browser session cookie. It is not a general-purpose or production LinkedIn data service. The cookie is server-side only and is never accepted from API callers. Provider coverage is shape-dependent: the adapter maps fields present in its LinkedIn Voyager Dash API response, and missing fields remain explicit Partial Profile values.
 
 ## Prerequisites
 
