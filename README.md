@@ -78,8 +78,8 @@ Retrieval is on demand. The Worker does not persist profiles or cache responses.
 
 ## Verification
 
-Use `npm test` for the deterministic verification suite (26 tests). Live verification is opt-in and requires the deployed Worker plus the Owner Credential; it is not part of CI. Verify `/health`, one valid profile request, one unsupported URL, and one provider/authentication failure without recording profile content or credentials. If LinkedIn invalidates the Owner Credential, rotate it interactively with `npx wrangler secret put LINKEDIN_SESSION_COOKIE`, clear coordinated session state through the operator-only reauthentication operation, and do not retry automatically.
+Use `npm test` for the deterministic verification suite (24 tests). Live verification is opt-in and requires the deployed Worker plus the Owner Credential; it is not part of CI. Verify `/health`, one valid profile request, one unsupported URL, and one provider/authentication failure without recording profile content or credentials. If LinkedIn invalidates the Owner Credential, rotate it interactively with `npx wrangler secret put LINKEDIN_SESSION_COOKIE`, clear coordinated session state through the operator-only reauthentication operation, and do not retry automatically.
 
-The deployed smoke checks verify `GET /health` → `200` and unsupported profile validation → `422`. A successful profile retrieval requires a real public profile URL whose Owner Session Integration is accepted by LinkedIn; the deployment may return `502 provider_unavailable` when LinkedIn rejects Browser Run access.
+The deployed smoke checks verify `GET /health` → `200` and unsupported profile validation → `422`. A successful profile retrieval requires a real public profile URL whose Owner Session Integration is accepted by LinkedIn; the deployment may return `502 provider_unavailable` when LinkedIn rejects direct Worker-originated access.
 
 See [the profile contract](docs/profile-api-contract.md) and [linkedin session integration notes](docs/linkedin-session-integration.md) for the detailed schema and limitations.

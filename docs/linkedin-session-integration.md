@@ -14,7 +14,7 @@ Never place the value in `wrangler.jsonc`, source code, logs, request bodies, fi
 
 ## Runtime verification
 
-The Browser Run Profile Provider opens one public rendered profile per synchronous request. The Worker coordinates access through a deployment-scoped session coordinator and returns a normalized Partial Profile when identity is available. Automated tests use fixtures and mocked browser behavior; live connectivity requires deployment with the Owner Credential.
+The direct Profile Provider sends one authenticated HTTP request to LinkedIn’s public member-profile endpoint per synchronous request. It parses the returned HTML and embedded JSON-LD without launching a browser, executing page JavaScript, or using Browser Run. The Worker coordinates access through a deployment-scoped session coordinator and returns a normalized Partial Profile when identity is available. Automated tests use fixtures and mocked HTTP responses; live connectivity requires deployment with the Owner Credential.
 
 ## Reauthentication
 
@@ -30,4 +30,4 @@ The session coordinator must then be cleared through its operator-only reauthent
 
 This is limited to the configured deployment and the owner’s account. It is not a general-purpose authorized LinkedIn data service. It does not accept LinkedIn passwords, caller-provided cookies, or arbitrary authentication material. A session cookie may expire, be revoked, or fail when LinkedIn requires browser execution or rejects Worker-originated requests; in that case the integration must be marked runtime-incompatible rather than bypassing protections.
 Operational safeguards are intentionally MVP-scoped: profile retrieval is on demand with no profile persistence or cache, upstream responses are bounded and timed out, and the Worker applies a best-effort per-client rate limit plus a single-session concurrency limit. This is not a durable abuse-control boundary.
-Live verification observed LinkedIn HTTP 999 from the Worker despite a configured session cookie; this is treated as provider_unavailable and indicates LinkedIn is blocking Worker-originated access. The adapter does not bypass that protection.
+Live verification may observe LinkedIn HTTP 999 from the Worker despite a configured session cookie; this is treated as provider_unavailable and indicates LinkedIn is blocking direct Worker-originated access. The adapter does not bypass that protection.
