@@ -22,6 +22,12 @@ export function createSessionCoordinator({
     acquire() {
       const current = storage.get(LEASE_KEY);
       const timestamp = now();
+      const state = storage.get(STATE_KEY);
+      if (state?.status === "invalidated") {
+        const error = new Error("deployment session requires reauthentication");
+        error.code = "provider_auth_failed";
+        throw error;
+      }
       if (current && current.expiresAt > timestamp) throw new SessionBusyError();
 
       const lease = { token: token(), expiresAt: timestamp + leaseMs };
@@ -39,6 +45,11 @@ export function createSessionCoordinator({
       storage.delete(LEASE_KEY);
       storage.put(STATE_KEY, { status: "invalidated", reason, at: now() });
       return { status: "invalidated", reason };
+    },
+
+    reauthenticate() {
+      storage.delete(STATE_KEY);
+      return { status: "ready" };
     },
 
     status() {

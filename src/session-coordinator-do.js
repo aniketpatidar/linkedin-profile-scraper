@@ -21,6 +21,10 @@ export class ProfileSessionCoordinator extends DurableObject {
     return this.#coordinator.invalidate(reason);
   }
 
+  reauthenticate() {
+    return this.#coordinator.reauthenticate();
+  }
+
   status() {
     return this.#coordinator.status();
   }

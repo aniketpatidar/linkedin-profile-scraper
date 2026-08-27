@@ -14,5 +14,5 @@
 
 ## Resolution
 
-Implemented the deployment-scoped `ProfileSessionCoordinator` Durable Object with SQLite-backed synchronous KV state, lease acquisition/release, expiration, invalidation, and status RPCs. Added deterministic coordinator tests, registered the SQLite Durable Object migration and binding, regenerated Worker types, and verified the bundle with `wrangler deploy --dry-run`. The full suite passes with 22 tests.
+Implemented the deployment-scoped `ProfileSessionCoordinator` Durable Object with SQLite-backed synchronous KV state, lease acquisition/release, expiration, invalidation, and status RPCs. Added deterministic coordinator tests, registered the SQLite Durable Object migration and binding, regenerated Worker types, and verified the bundle with `wrangler deploy --dry-run`. The coordinator is wired into the Worker request path, maps session contention to 429, blocks invalidated sessions until reauthentication, and releases leases in a finally path. The full suite passes with 24 tests.
 
