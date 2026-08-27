@@ -1,0 +1,70 @@
+{
+  "profile": {
+    "firstName": "Ada",
+    "lastName": "Example",
+    "headline": "Staff Engineer",
+    "summary": "Builds reliable systems.",
+    "locationName": "Bengaluru",
+    "miniProfile": {
+      "picture": {
+        "com.linkedin.common.VectorImage": {
+          "rootUrl": "https://media.example/",
+          "artifacts": [
+            {
+              "fileIdentifyingUrlPathSegment": "avatar.jpg",
+              "width": 400,
+              "height": 400
+            }
+          ]
+        }
+      }
+    }
+  },
+  "positionView": {
+    "elements": [
+      {
+        "companyName": "Acme Systems",
+        "title": "Staff Engineer",
+        "description": "Builds reliable systems.",
+        "timePeriod": {
+          "startDate": { "year": 2020, "month": 1 }
+        }
+      }
+    ]
+  },
+  "educationView": {
+    "elements": [
+      {
+        "schoolName": "Example University",
+        "degreeName": "BSc Computer Science",
+        "timePeriod": {
+          "startDate": { "year": 2012 },
+          "endDate": { "year": 2016 }
+        }
+      }
+    ]
+  },
+  "skillView": {
+    "elements": [
+      { "name": "JavaScript" },
+      { "name": "Cloudflare Workers" }
+    ]
+  },
+  "certificationView": {
+    "elements": [
+      {
+        "name": "Cloudflare Developer Certification",
+        "authority": "Cloudflare",
+        "timePeriod": {
+          "startDate": { "year": 2024, "month": 3 }
+        }
+      }
+    ]
+  },
+  "languageView": {
+    "elements": [
+      { "name": "English" },
+      { "name": "Hindi", "proficiency": "professional" }
+    ]
+  }
+}

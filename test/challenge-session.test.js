@@ -1,12 +1,19 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createChallengeProfileRequest } from "../src/providers/challenge-session.js";
+import { createChallengeProfileRequest, extractCsrfToken } from "../src/providers/challenge-session.js";
+
+test("extracts csrf token from cookie", () => {
+  assert.equal(extractCsrfToken('li_at=secret; JSESSIONID="ajax:12345"; other=val'), "ajax:12345");
+  assert.equal(extractCsrfToken('JSESSIONID=ajax:12345'), "ajax:12345");
+  assert.equal(extractCsrfToken('li_at=secret'), null);
+});
 
 test("builds a LinkedIn request from the server-side session cookie", () => {
-  const request = createChallengeProfileRequest("/in/example", "li_at=secret");
+  const request = createChallengeProfileRequest("/in/example", 'li_at=secret; JSESSIONID="ajax:12345"');
 
-  assert.equal(request.url, "https://www.linkedin.com/in/example");
-  assert.equal(request.headers.get("cookie"), "li_at=secret");
+  assert.equal(request.url, "https://www.linkedin.com/voyager/api/identity/profiles/example/profileView");
+  assert.equal(request.headers.get("cookie"), 'li_at=secret; JSESSIONID="ajax:12345"');
+  assert.equal(request.headers.get("csrf-token"), "ajax:12345");
   assert.equal(request.headers.get("user-agent"), "linkedin-profile-api-challenge/1.0");
 });
 
@@ -23,7 +30,6 @@ test("rejects missing session secrets", () => {
     /LINKEDIN_SESSION_COOKIE is not configured/
   );
 });
-
 
 test("rejects paths that normalize outside the profile route", () => {
   assert.throws(

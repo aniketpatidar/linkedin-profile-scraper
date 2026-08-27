@@ -2,28 +2,28 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   createLinkedInSessionProvider,
-  parseLinkedInProfileHtml,
+  parseVoyagerProfileJson,
 } from "../src/providers/linkedin-session.js";
 import { ProfileApiError } from "../src/profile-api.js";
 import { readFile } from "node:fs/promises";
 
-const fixture = await readFile(
-  new URL("./fixtures/linkedin-profile.html", import.meta.url),
+const fixture = JSON.parse(await readFile(
+  new URL("./fixtures/voyager-profile.json", import.meta.url),
   "utf8",
-);
+));
 const profileUrl = "https://www.linkedin.com/in/ada-example";
 
 function response(body, status = 200) {
-  return new Response(body, {
+  return new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "text/html" },
+    headers: { "content-type": "application/json" },
   });
 }
 
-test("maps fixture profile HTML into the enriched Profile contract", async () => {
+test("maps fixture voyager JSON into the enriched Profile contract", async () => {
   let upstreamRequest;
   const provider = createLinkedInSessionProvider({
-    sessionCookie: "li_at=fixture-only",
+    sessionCookie: 'li_at=fixture-only; JSESSIONID="ajax:fixture"',
     fetchImpl: async (request) => {
       upstreamRequest = request;
       return response(fixture);
@@ -76,38 +76,40 @@ test("maps fixture profile HTML into the enriched Profile contract", async () =>
       height: 400,
     },
   ]);
-  assert.equal(profile.source, "linkedin-session");
-  assert.equal(upstreamRequest.headers.get("cookie"), "li_at=fixture-only");
-  assert.equal(upstreamRequest.url, profileUrl);
+  assert.equal(profile.source, "voyager-api");
+  assert.equal(upstreamRequest.headers.get("cookie"), 'li_at=fixture-only; JSESSIONID="ajax:fixture"');
+  assert.equal(upstreamRequest.headers.get("csrf-token"), "ajax:fixture");
+  assert.equal(upstreamRequest.url, "https://www.linkedin.com/voyager/api/identity/profiles/ada-example/profileView");
 });
 
 test("returns empty enrichment collections for malformed or unavailable fields", () => {
-  const typeKey = "@type";
-  const person = {
-    [typeKey]: "Person",
-    name: "Partial Example",
-    worksFor: "bad",
-    alumniOf: [{ degree: "missing institution" }],
-    knowsAbout: [42],
-    hasCredential: [{ issuer: "missing name" }],
-    knowsLanguage: [{ proficiency: "missing name" }],
-    image: { url: "https://media.example/partial.jpg", width: "400" },
+  const payload = {
+    profile: {
+      firstName: "Partial",
+      lastName: "Example",
+    },
+    positionView: { elements: [{}] },
+    educationView: { elements: [{}] },
+    skillView: { elements: [{ name: "Partial Skill" }] },
+    certificationView: { elements: [{}] },
+    languageView: { elements: [{}] }
   };
-  const html = `<script type="application/ld+json">${JSON.stringify(person)}</script>`;
-  const profile = parseLinkedInProfileHtml(html, profileUrl);
-  assert.deepEqual(profile.experience, []);
-  assert.deepEqual(profile.education, []);
-  assert.deepEqual(profile.skills, []);
-  assert.deepEqual(profile.certifications, []);
-  assert.deepEqual(profile.languages, []);
-  assert.deepEqual(profile.images, [
-    { url: "https://media.example/partial.jpg", kind: "profile" },
-  ]);
+  const profile = parseVoyagerProfileJson(payload, profileUrl);
+  assert.equal(profile.experience.length, 1);
+  assert.equal(profile.experience[0].company, null);
+  assert.equal(profile.education.length, 1);
+  assert.equal(profile.education[0].institution, null);
+  assert.deepEqual(profile.skills, [{ name: "Partial Skill" }]);
+  assert.equal(profile.certifications.length, 1);
+  assert.equal(profile.certifications[0].name, null);
+  assert.equal(profile.languages.length, 1);
+  assert.equal(profile.languages[0].name, null);
+  assert.deepEqual(profile.images, []);
 });
 
 test("returns null when no trustworthy person data is present", () => {
   assert.equal(
-    parseLinkedInProfileHtml("<html><head></head></html>", profileUrl),
+    parseVoyagerProfileJson({}, profileUrl),
     null,
   );
 });
@@ -122,7 +124,7 @@ test("maps authentication, rate-limit, not-found, and provider failures", async 
   ]) {
     const provider = createLinkedInSessionProvider({
       sessionCookie: "li_at=fixture-only",
-      fetchImpl: async () => response("", status),
+      fetchImpl: async () => response({}, status),
     });
 
     await assert.rejects(
