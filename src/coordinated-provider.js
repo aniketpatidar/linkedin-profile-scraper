@@ -10,8 +10,11 @@ export function createCoordinatedProvider(provider, coordinator) {
       if (error?.code === "session_busy") {
         throw new ProfileApiError("session_busy", "deployment session is busy", 429);
       }
+      if (error?.code === "session_invalidated") {
+        throw new ProfileApiError("provider_auth_failed", "profile provider authentication failed", 502);
+      }
       if (error?.code === "provider_auth_failed") {
-        await coordinator.invalidate("manual_reauthentication_required");
+        await coordinator.invalidate("provider_auth_failed");
       }
       throw error;
     } finally {

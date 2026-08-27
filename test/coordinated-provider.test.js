@@ -32,5 +32,5 @@ test("maps a busy session and invalidates on authentication failure", async () =
     invalidate: async (reason) => events.push(reason),
   });
   await assert.rejects(authFailed("profile-url"), { code: "provider_auth_failed" });
-  assert.deepEqual(events, ["manual_reauthentication_required", "release"]);
+  assert.deepEqual(events, ["provider_auth_failed", "release"]);
 });
