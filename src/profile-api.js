@@ -126,12 +126,14 @@ export function createRateLimiter({
   windowMs = 60_000,
   now = () => Date.now(),
 } = {}) {
-  let window;
+  const windows = new Map();
   return {
-    allow() {
+    allow(clientKey = "anonymous") {
+      const window = windows.get(clientKey);
       const current = now();
       if (!window || current - window.startedAt >= windowMs) {
-        window = { startedAt: current, count: 1 };
+        const nextWindow = { startedAt: current, count: 1 };
+        windows.set(clientKey, nextWindow);
         return true;
       }
       if (window.count >= maxRequests) return false;
@@ -184,7 +186,8 @@ export function createProfileWorker(
         );
       }
 
-      if (!rateLimiter.allow()) {
+      const clientKey = request.headers.get("cf-connecting-ip")?.trim() || "anonymous";
+      if (!rateLimiter.allow(clientKey)) {
         return finish(
           errorResponse(
             new ProfileApiError(
