@@ -1,6 +1,7 @@
 import { createLinkedInBrowserProvider } from "./providers/linkedin-browser.js";
 import { createProfileWorker, createRateLimiter } from "./profile-api.js";
 import { createLinkedInSessionProvider } from "./providers/linkedin-session.js";
+export { ProfileSessionCoordinator } from "./session-coordinator-do.js";
 
 const rateLimiter = createRateLimiter({ maxRequests: 10, windowMs: 60_000 });
 const logger = (event) => console.log(JSON.stringify(event));

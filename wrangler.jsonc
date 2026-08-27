@@ -5,6 +5,8 @@
   "compatibility_date": "2026-08-26",
   "compatibility_flags": ["nodejs_compat"],
   "browser": { "binding": "BROWSER" },
+  "durable_objects": { "bindings": [{ "name": "SESSION_COORDINATOR", "class_name": "ProfileSessionCoordinator" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ProfileSessionCoordinator"] }],
   "secrets": {
     "required": ["LINKEDIN_SESSION_COOKIE"]
   }
